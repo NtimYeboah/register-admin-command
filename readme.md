@@ -24,7 +24,7 @@ Simple project to demonstrate how to register a super admin with artisan command
 
 - Run migration
 
-`php artisan db:migrate`
+`php artisan migrate`
 
 ## Run artisan command
 
