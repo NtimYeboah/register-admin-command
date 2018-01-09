@@ -43,7 +43,7 @@ class User extends Authenticatable
      * @param array $details
      * @return array
      */
-    public function create(array $details) : self
+    public function createSuperAdmin(array $details) : self
     {
         $user = new self($details);
 
@@ -57,12 +57,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Checks if super admin exists.
+     * Checks if super admin exists
      *
-     * @return object|null
+     * @return integer
      */
-    public function superAdminExists()
+    public function superAdminExists() : int
     {
-        return self::where('is_super_admin', 1)->first();
+        return self::where('is_super_admin', 1)->count();
     }
 }

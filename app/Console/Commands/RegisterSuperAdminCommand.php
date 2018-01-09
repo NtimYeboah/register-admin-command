@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use App\User;
 use Illuminate\Console\Command;
 
-class RegisterAdminCommand extends Command
+class RegisterSuperAdminCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'register:admin';
+    protected $signature = 'register:super-admin';
 
     /**
      * The console command description.
@@ -49,7 +49,7 @@ class RegisterAdminCommand extends Command
     {
         $details = $this->getDetails();
 
-        $admin = $this->user->create($details);
+        $admin = $this->user->createSuperAdmin($details);
 
         $this->display($admin);
     }
@@ -66,8 +66,7 @@ class RegisterAdminCommand extends Command
         $details['password'] = $this->secret('Password');
         $details['confirm_password'] = $this->secret('Confirm password');
 
-        while (! ($this->isRequiredLength($details['password'])
-        && $this->isMatch($details['password'], $details['confirm_password']))) {
+        while (! $this->isValidPassword($details['password'], $details['confirm_password'])) {
             if (! $this->isRequiredLength($details['password'])) {
                 $this->error('Password must be more that six characters');
             }
@@ -101,6 +100,19 @@ class RegisterAdminCommand extends Command
 
         $this->info('Super admin created');
         $this->table($headers, [$fields]);
+    }
+
+    /**
+     * Check if password is vailid
+     *
+     * @param string $password
+     * @param string $confirmPassword
+     * @return boolean
+     */
+    private function isValidPassword(string $password, string $confirmPassword) : bool
+    {
+        return $this->isRequiredLength($password) &&
+        $this->isMatch($password, $confirmPassword);
     }
 
     /**
